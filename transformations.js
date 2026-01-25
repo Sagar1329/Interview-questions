@@ -17,14 +17,14 @@ const sumArr = arr.reduce((acc, curr) => {
 console.log(sumArr);
 console.log("-------------------------------------");
 
-const flarArray = [1, [2, 3], [4, [5]]];
+const flatArray = [1, [2, 3], [4, [5]]];
 
-function flatArr(arr) {
+function flattenArray(arr) {
     return arr.reduce((acc, cur) => {
-        return Array.isArray(cur) ? acc.concat(flatArr(cur)) : acc.concat(cur);
+        return Array.isArray(cur) ? acc.concat(flattenArray(cur)) : acc.concat(cur);
     }, [])
 }
-console.log(flatArr(flarArray));
+console.log(flattenArray(flatArray));
 console.log("-------------------------------------");
 
 const users = [
@@ -68,20 +68,20 @@ console.log(convertToObjId);
 console.log("-------------------------------------");
 
 // const userGreaterThan25 = users.filter((user) => {
-    
+
 //     return user.age > 25;
 // }).map((user) => {
 //     return user.name;
 // })
-const userGreaterThan25 = users.reduce((acc,curr) => {
+const userGreaterThan25 = users.reduce((acc, curr) => {
 
-    if(curr.age > 25){
+    if (curr.age > 25) {
         acc.push(curr.name);
     }
     return acc;
 }, [])
 
-console.log("Reduced mehod",userGreaterThan25);
+console.log("Reduced method", userGreaterThan25);
 console.log("-------------------------------------");
 
 const cart = [
@@ -89,10 +89,10 @@ const cart = [
     { item: "Book", price: 50, qty: 1 },
 ];
 
-const totapPriceInCart = cart.reduce((acc, curr) => {
+const totalPriceInCart = cart.reduce((acc, curr) => {
     return acc + (curr.price * curr.qty);
 }, 0)
-console.log(totapPriceInCart);
+console.log(totalPriceInCart);
 console.log("-------------------------------------");
 
 // remove duplicates from array
@@ -160,7 +160,7 @@ const groupUsersByAge2 = users1.reduce((acc, cur) => {
 }, {})
 
 console.log(groupUsersByAge2);
-console.log("Onle names-------------------------------------");
+console.log("Only names-------------------------------------");
 
 // max age user
 const users2 = [
@@ -207,19 +207,70 @@ const countryWiseCities = data.reduce((acc, cur) => {
 console.log("Cont", countryWiseCities);
 console.log("-------------------------------------");
 
-//Ternary operator
+// Ternary operator
 const countryWiseCities2 = data.reduce((acc, cur) => {
-    (!acc[cur.country]) ? acc[cur.country] = []: acc[cur.country].push(cur.city);
+    (!acc[cur.country]) ? acc[cur.country] = [cur.city] : acc[cur.country].push(cur.city);
     return acc;
-}, {})
-console.log("Cont",countryWiseCities2);
+}, {});
+console.log("Cont", countryWiseCities2);
 console.log("-------------------------------------");
 
 
 const sortUserInAscendingOrder = [...users2].sort((a, b) => a.age - b.age);
 console.log(sortUserInAscendingOrder);
 
-const newUser =   { country: "India", city: "Andrapradesh" }
+const newUser = { country: "India", city: "Andhra Pradesh" }
 
-const newData = [newUser, ...data,];
+const newData = [newUser, ...data];
 console.log(newData);
+
+// Interview Questions:
+// 1. Why do we use React?
+// 2. Why do we prefer React over others?
+// 3. What is a library in React?
+// 4. Why do we call Angular a framework and React a library?
+// 5. Class based hooks vs function based hooks?
+// 6. What is closure?
+// 7. Difference between .map() and forEach()let str1 = "Hello";
+let str1 = "Hello";
+let str2 = "World";
+let result1 = str1 + " " + str2;
+let result2 = str1.concat(" ", str2);
+console.log(result1); // Output: Hello World
+console.log(result2); // Output: Hello World
+
+
+let str = "123";
+let num = parseInt(str);
+console.log(num); // Output: 123
+
+
+let a = 4;
+let b = "4";
+console.log(a == b); // Output: true (type coercion to int)
+console.log(a === b); // Output: false (no type coercion)
+
+
+function greet(name) {
+  return "Hello, " + name;
+}
+
+console.log(greet("Alice")); // Output: Hello, Alice
+
+let arr3 = [1, 2, 3];
+let doubledArr = arr.map(function(num) {
+  return num * 2;
+});
+console.log(doubledArr); // Output: [2, 4, 6]
+
+
+let arr4 = [1, 2, 3];
+let sum = arr.reduce(function(acc, curr) {
+  return acc + curr;
+}, 0);
+console.log(sum); // Output: 6
+
+
+let obj = { name: "Alice", age: 25 };
+let keys = Object.keys(obj);
+console.log(keys); // Output: ["name", "age"]
