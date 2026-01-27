@@ -274,3 +274,13 @@ console.log(sum); // Output: 6
 let obj = { name: "Alice", age: 25 };
 let keys = Object.keys(obj);
 console.log(keys); // Output: ["name", "age"]
+
+
+
+
+
+
+
+
+
+                                                                                                                                                                                                                                                     
