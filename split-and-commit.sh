@@ -7,41 +7,50 @@ OUTPUT_DIR="questions"
 
 # ---- Safety checks ----
 if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-  echo " Not inside a git repository"
+  echo "❌ Not inside a git repository"
   exit 1
 fi
 
 if [ ! -f "$SOURCE_FILE" ]; then
-  echo " File not found: $SOURCE_FILE"
+  echo "❌ File not found: $SOURCE_FILE"
   exit 1
 fi
 
 mkdir -p "$OUTPUT_DIR"
 
-# ---- Split logic ----
+# ---- Split + filename generation ----
 awk '
-BEGIN {
-  fileIndex = 0
+function slugify(text) {
+  text = tolower(text)
+  gsub(/[^a-z0-9]+/, "-", text)
+  gsub(/^-|-$/, "", text)
+  return text
 }
 
 /^\/\/ === QUESTION:/ {
-  fileIndex++
-  filename = sprintf("question_%02d.js", fileIndex)
-  filepath = outdir "/" filename
-  print "// Auto-generated file\n" > filepath
+  close(file)
+
+  question = $0
+  sub(/^\/\/ === QUESTION:[[:space:]]*/, "", question)
+  sub(/[[:space:]]*===.*$/, "", question)
+
+  filename = slugify(question) ".js"
+  file = outdir "/" filename
+
+  print "// Auto-generated from questions.js\n" > file
 }
 
 {
-  if (fileIndex > 0) {
-    print >> filepath
+  if (file != "") {
+    print >> file
   }
 }
 ' outdir="$OUTPUT_DIR" "$SOURCE_FILE"
 
 # ---- Commit each file individually ----
-for file in "$OUTPUT_DIR"/question_*.js; do
+for file in "$OUTPUT_DIR"/*.js; do
   git add "$file"
   git commit -m "implement $(basename "$file")"
 done
 
-echo " Split + commit completed successfully"
+echo "✅ Split + commit completed with question-based filenames"
