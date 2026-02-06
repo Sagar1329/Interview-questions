@@ -1,194 +1,143 @@
+// === QUESTION: double array values using map ===
 const arr = [2, 5, 8, 2, 43];
-const res = arr.map((num) => {
-    return num * 2;
-})
-console.log(res);
-console.log("-------------------------------------");
+const doubled = arr.map(num => num * 2);
+console.log(doubled);
 
-const evenNumber = arr.filter((num) => {
-    return num % 2 == 0;
-})
-console.log(evenNumber);
-console.log("-------------------------------------");
+// === QUESTION: filter even numbers ===
+const evenNumbers = arr.filter(num => num % 2 === 0);
+console.log(evenNumbers);
 
-const sumArr = arr.reduce((acc, curr) => {
-    return acc + curr;
-}, 0)
+// === QUESTION: sum array using reduce ===
+const sumArr = arr.reduce((acc, curr) => acc + curr, 0);
 console.log(sumArr);
-console.log("-------------------------------------");
 
+// === QUESTION: flatten nested array ===
 const flatArray = [1, [2, 3], [4, [5]]];
-
-function flattenArray(arr) {
-    return arr.reduce((acc, cur) => {
-        return Array.isArray(cur) ? acc.concat(flattenArray(cur)) : acc.concat(cur);
-    }, [])
+function flattenArray(array) {
+    return array.reduce(
+        (acc, cur) =>
+            Array.isArray(cur) ? acc.concat(flattenArray(cur)) : acc.concat(cur),
+        []
+    );
 }
 console.log(flattenArray(flatArray));
-console.log("-------------------------------------");
 
+// === QUESTION: extract names from users ===
 const users = [
     { id: 1, name: "Alice", age: 25 },
     { id: 2, name: "Bob", age: 30 },
 ];
 
-const names = users.map((user) => {
-    return user.name;
-})
+const userNames = users.map(user => user.name);
+console.log(userNames);
 
-console.log(names);
-console.log("-------------------------------------");
+// === QUESTION: filter users above age 25 ===
+const usersAbove25 = users.filter(user => user.age > 25);
+console.log(usersAbove25);
 
-const ageAbove25 = users.filter((user) => {
-    return user.age > 25;
-})
-
-console.log(ageAbove25);
-console.log("-------------------------------------");
-
-const totalAge = users.reduce((acc, cur) => {
-    return acc + cur.age;
-}, 0)
+// === QUESTION: calculate total age ===
+const totalAge = users.reduce((acc, user) => acc + user.age, 0);
 console.log(totalAge);
 
-// convert array of objects to object with id as key
+// === QUESTION: convert array of objects to object by id ===
 const usersDef = [
     { id: 1, name: "Alice" },
     { id: 2, name: "Bob" }
 ];
 
-
-const convertToObjId = usersDef.reduce((acc, cur) => {
+const usersById = usersDef.reduce((acc, cur) => {
     acc[cur.id] = cur;
     return acc;
-}, {})
+}, {});
+console.log(usersById);
 
-
-console.log(convertToObjId);
-console.log("-------------------------------------");
-
-// const userGreaterThan25 = users.filter((user) => {
-
-//     return user.age > 25;
-// }).map((user) => {
-//     return user.name;
-// })
-const userGreaterThan25 = users.reduce((acc, curr) => {
-
-    if (curr.age > 25) {
-        acc.push(curr.name);
-    }
+// === QUESTION: get names of users above 25 using reduce ===
+const namesAbove25 = users.reduce((acc, user) => {
+    if (user.age > 25) acc.push(user.name);
     return acc;
-}, [])
+}, []);
+console.log(namesAbove25);
 
-console.log("Reduced method", userGreaterThan25);
-console.log("-------------------------------------");
-
+// === QUESTION: calculate total cart price ===
 const cart = [
     { item: "Pen", price: 10, qty: 2 },
     { item: "Book", price: 50, qty: 1 },
 ];
 
-const totalPriceInCart = cart.reduce((acc, curr) => {
-    return acc + (curr.price * curr.qty);
-}, 0)
-console.log(totalPriceInCart);
-console.log("-------------------------------------");
+const totalCartPrice = cart.reduce(
+    (acc, item) => acc + item.price * item.qty,
+    0
+);
+console.log(totalCartPrice);
 
-// remove duplicates from array
+// === QUESTION: remove duplicates from array ===
 const nums = [1, 2, 2, 3, 4, 4];
-const removeDuplicates = nums.reduce((acc, curr) => {
-    if (!acc.includes(curr)) {
-        acc.push(curr);
-    }
+const uniqueNums = nums.reduce((acc, num) => {
+    if (!acc.includes(num)) acc.push(num);
     return acc;
-}, [])
-console.log(removeDuplicates);
-console.log("-------------------------------------");
+}, []);
+console.log(uniqueNums);
 
-// count occurence of elements in array
+// === QUESTION: count occurrence of elements ===
 const fruits = ["apple", "banana", "apple", "orange", "banana"];
-
-const countOccurence = fruits.reduce((acc, cur) => {
-    acc[cur] = (acc[cur] || 0) + 1;
+const fruitCount = fruits.reduce((acc, fruit) => {
+    acc[fruit] = (acc[fruit] || 0) + 1;
     return acc;
-}, {})
+}, {});
+console.log(fruitCount);
 
-console.log(countOccurence);
-console.log("-------------------------------------");
-
-//Convert this object into an array of users:
+// === QUESTION: convert object to array ===
 const userObj = {
     1: { id: 1, name: "Alice" },
     2: { id: 2, name: "Bob" }
 };
 
-const convertToArray1 = Object.values(userObj);
-console.log(convertToArray1);
-console.log("-------------------------------------");
+console.log(Object.values(userObj));
 
-const convertToArray = Object.keys(userObj).map((key) => {
-    return userObj[key];
-})
-
-console.log(convertToArray);
-console.log("-------------------------------------");
-
-// group users by age
-const users1 = [
+// === QUESTION: group users by age ===
+const usersByAgeInput = [
     { name: "Alice", age: 25 },
     { name: "Bob", age: 25 },
     { name: "Charlie", age: 30 },
 ];
 
-const groupUsersByAge = users1.reduce((acc, cur) => {
-    // acc[cur.age]= acc[cur.age] || [];
-    if (!acc[cur.age]) {
-        acc[cur.age] = [];
-    }
-    acc[cur.age].push(cur);
+const usersByAge = usersByAgeInput.reduce((acc, user) => {
+    if (!acc[user.age]) acc[user.age] = [];
+    acc[user.age].push(user);
     return acc;
-}, {})
+}, {});
+console.log(usersByAge);
 
-const groupUsersByAge2 = users1.reduce((acc, cur) => {
-    // acc[cur.age]= acc[cur.age] || [];
-    if (!acc[cur.age]) {
-        acc[cur.age] = [];
-    }
-    acc[cur.age].push(cur.name);
+// === QUESTION: group user names by age ===
+const userNamesByAge = usersByAgeInput.reduce((acc, user) => {
+    if (!acc[user.age]) acc[user.age] = [];
+    acc[user.age].push(user.name);
     return acc;
-}, {})
+}, {});
+console.log(userNamesByAge);
 
-console.log(groupUsersByAge2);
-console.log("Only names-------------------------------------");
-
-// max age user
+// === QUESTION: find user with max age ===
 const users2 = [
     { name: "Alice", age: 25 },
     { name: "Bob", age: 30 },
     { name: "Charlie", age: 28 }
 ];
 
-const maxAgeUser = users2.reduce((acc, cur) => {
-    return (acc.age > cur.age) ? acc : cur;
-})
+const maxAgeUser = users2.reduce((max, user) =>
+    user.age > max.age ? user : max
+);
 console.log(maxAgeUser);
-console.log("-------------------------------------");
 
-//some user below 18 checking
-const hasMinor = users2.some((user) => {
-    return user.age < 18;
-})
+// === QUESTION: check if any user is minor ===
+const hasMinor = users2.some(user => user.age < 18);
 console.log(hasMinor);
-console.log("-------------------------------------");
 
-const everyUserAdult = users2.every((user) => {
-    return user.age >= 18;
-})
-console.log(everyUserAdult);
-console.log("-------------------------------------");
+// === QUESTION: check if all users are adults ===
+const allAdults = users2.every(user => user.age >= 18);
+console.log(allAdults);
 
-const data = [
+// === QUESTION: group cities by country ===
+const locations = [
     { country: "India", city: "Karnataka" },
     { country: "Pakistan", city: "Karachi" },
     { country: "India", city: "Delhi" },
@@ -197,90 +146,39 @@ const data = [
     { country: "Pakistan", city: "Lahore" }
 ];
 
-const countryWiseCities = data.reduce((acc, cur) => {
-    if (!acc[cur.country]) {
-        acc[cur.country] = [];
-    }
-    acc[cur.country].push(cur.city);
-    return acc;
-}, {})
-console.log("Cont", countryWiseCities);
-console.log("-------------------------------------");
-
-// Ternary operator
-const countryWiseCities2 = data.reduce((acc, cur) => {
-    (!acc[cur.country]) ? acc[cur.country] = [cur.city] : acc[cur.country].push(cur.city);
+const citiesByCountry = locations.reduce((acc, loc) => {
+    if (!acc[loc.country]) acc[loc.country] = [];
+    acc[loc.country].push(loc.city);
     return acc;
 }, {});
-console.log("Cont", countryWiseCities2);
-console.log("-------------------------------------");
+console.log(citiesByCountry);
 
+// === QUESTION: sort users by age ascending ===
+const sortedUsers = [...users2].sort((a, b) => a.age - b.age);
+console.log(sortedUsers);
 
-const sortUserInAscendingOrder = [...users2].sort((a, b) => a.age - b.age);
-console.log(sortUserInAscendingOrder);
+// === QUESTION: string concatenation ===
+const str1 = "Hello";
+const str2 = "World";
+console.log(str1 + " " + str2);
+console.log(str1.concat(" ", str2));
 
-const newUser = { country: "India", city: "Andhra Pradesh" }
+// === QUESTION: string to number conversion ===
+const strNum = "123";
+console.log(parseInt(strNum, 10));
 
-const newData = [newUser, ...data];
-console.log(newData);
+// === QUESTION: loose vs strict equality ===
+const a = 4;
+const b = "4";
+console.log(a == b);
+console.log(a === b);
 
-// Interview Questions:
-// 1. Why do we use React?
-// 2. Why do we prefer React over others?
-// 3. What is a library in React?
-// 4. Why do we call Angular a framework and React a library?
-// 5. Class based hooks vs function based hooks?
-// 6. What is closure?
-// 7. Difference between .map() and forEach()let str1 = "Hello";
-let str1 = "Hello";
-let str2 = "World";
-let result1 = str1 + " " + str2;
-let result2 = str1.concat(" ", str2);
-console.log(result1); // Output: Hello World
-console.log(result2); // Output: Hello World
-
-
-let str = "123";
-let num = parseInt(str);
-console.log(num); // Output: 123
-
-
-let a = 4;
-let b = "4";
-console.log(a == b); // Output: true (type coercion to int)
-console.log(a === b); // Output: false (no type coercion)
-
-
+// === QUESTION: simple function ===
 function greet(name) {
-  return "Hello, " + name;
+    return "Hello, " + name;
 }
+console.log(greet("Alice"));
 
-console.log(greet("Alice")); // Output: Hello, Alice
-
-let arr3 = [1, 2, 3];
-let doubledArr = arr.map(function(num) {
-  return num * 2;
-});
-console.log(doubledArr); // Output: [2, 4, 6]
-
-
-let arr4 = [1, 2, 3];
-let sum = arr.reduce(function(acc, curr) {
-  return acc + curr;
-}, 0);
-console.log(sum); // Output: 6
-
-
-let obj = { name: "Alice", age: 25 };
-let keys = Object.keys(obj);
-console.log(keys); // Output: ["name", "age"]
-
-
-
-
-
-
-
-
-
-                                                                                                                                                                                                                                                     
+// === QUESTION: Object.keys usage ===
+const obj = { name: "Alice", age: 25 };
+console.log(Object.keys(obj));
