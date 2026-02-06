@@ -7,12 +7,12 @@ OUTPUT_DIR="questions"
 
 # ---- Safety checks ----
 if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-  echo "❌ Not inside a git repository"
+  echo " Not inside a git repository"
   exit 1
 fi
 
 if [ ! -f "$SOURCE_FILE" ]; then
-  echo "❌ File not found: $SOURCE_FILE"
+  echo " File not found: $SOURCE_FILE"
   exit 1
 fi
 
@@ -53,4 +53,4 @@ for file in "$OUTPUT_DIR"/*.js; do
   git commit -m "implement $(basename "$file")"
 done
 
-echo "✅ Split + commit completed with question-based filenames"
+echo " Split + commit completed with question-based filenames"
