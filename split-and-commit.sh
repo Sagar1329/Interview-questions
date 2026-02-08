@@ -18,7 +18,7 @@ fi
 
 mkdir -p "$OUTPUT_DIR"
 
-# ---- Split + filename generation ----
+# ---- Split + commit ONLY new questions ----
 awk '
 function slugify(text) {
   text = tolower(text)
@@ -35,9 +35,18 @@ function slugify(text) {
   sub(/[[:space:]]*===.*$/, "", question)
 
   filename = slugify(question) ".js"
-  file = outdir "/" filename
+  filepath = outdir "/" filename
 
-  print "// Auto-generated from questions.js\n" > file
+  # Skip if file already exists
+  if (system("[ -f \"" filepath "\" ]") == 0) {
+    file = ""
+    next
+  }
+
+  file = filepath
+  print "// Auto-generated from transformations.js\n" > file
+  print "NEW_FILE=" filename > "/tmp/new_question_files"
+  next
 }
 
 {
@@ -47,10 +56,17 @@ function slugify(text) {
 }
 ' outdir="$OUTPUT_DIR" "$SOURCE_FILE"
 
-# ---- Commit each file individually ----
-for file in "$OUTPUT_DIR"/*.js; do
-  git add "$file"
-  git commit -m "implement $(basename "$file")"
-done
+# ---- Commit only newly created files ----
+if [ -f /tmp/new_question_files ]; then
+  while read -r line; do
+    file="${line#NEW_FILE=}"
+    git add "$OUTPUT_DIR/$file"
+    git commit -m "implement $file"
+  done < /tmp/new_question_files
 
-echo " Split + commit completed with question-based filenames"
+  rm /tmp/new_question_files
+else
+  echo "ℹ No new questions found"
+fi
+
+echo " Only new questions were split and committed"
