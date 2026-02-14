@@ -345,3 +345,248 @@ function deepEqual(a, b) {
 }
 
 console.log(deepEqual({ a: 1, b: { c: 2 } }, { a: 1, b: { c: 2 } }));
+
+
+// === QUESTION: implement once function ===
+function once(fn) {
+  let called = false;
+  let result;
+  return function (...args) {
+    if (!called) {
+      called = true;
+      result = fn.apply(this, args);
+    }
+    return result;
+  };
+}
+
+const initialize = once(() => "Initialized");
+console.log(initialize());
+console.log(initialize());
+
+
+// === QUESTION: find intersection of two arrays ===
+function intersection(arr1, arr2) {
+  return arr1.filter(value => arr2.includes(value));
+}
+console.log(intersection([1,2,3], [2,3,4]));
+
+
+// === QUESTION: find difference between two arrays ===
+function difference(arr1, arr2) {
+  return arr1.filter(value => !arr2.includes(value));
+}
+console.log(difference([1,2,3], [2,3]));
+
+
+// === QUESTION: chunk array into smaller arrays ===
+function chunk(arr, size) {
+  const result = [];
+  for (let i = 0; i < arr.length; i += size) {
+    result.push(arr.slice(i, i + size));
+  }
+  return result;
+}
+console.log(chunk([1,2,3,4,5], 2));
+
+
+// === QUESTION: reverse words in a sentence ===
+function reverseWords(str) {
+  return str.split(" ").reverse().join(" ");
+}
+console.log(reverseWords("hello world javascript"));
+
+
+// === QUESTION: check palindrome string ===
+function isPalindrome(str) {
+  const reversed = str.split("").reverse().join("");
+  return str === reversed;
+}
+console.log(isPalindrome("madam"));
+
+
+// === QUESTION: find longest word in sentence ===
+function longestWord(sentence) {
+  return sentence.split(" ").reduce((longest, word) =>
+    word.length > longest.length ? word : longest
+  );
+}
+console.log(longestWord("learn javascript deeply"));
+
+
+// === QUESTION: remove falsy values from array ===
+function compact(arr) {
+  return arr.filter(Boolean);
+}
+console.log(compact([0, 1, false, 2, "", 3]));
+
+
+// === QUESTION: implement sleep function using promise ===
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+sleep(200).then(() => console.log("Done"));
+
+
+// === QUESTION: find first non repeating character ===
+function firstUniqueChar(str) {
+  const count = {};
+  for (let char of str) {
+    count[char] = (count[char] || 0) + 1;
+  }
+  return Object.keys(count).find(key => count[key] === 1);
+}
+console.log(firstUniqueChar("aabbcdde"));
+
+
+// === QUESTION: implement compose function ===
+function compose(...fns) {
+  return function (value) {
+    return fns.reduceRight((acc, fn) => fn(acc), value);
+  };
+}
+const addOne = x => x + 1;
+const double = x => x * 2;
+console.log(compose(double, addOne)(5));
+
+
+// === QUESTION: implement pipe function ===
+function pipe(...fns) {
+  return function (value) {
+    return fns.reduce((acc, fn) => fn(acc), value);
+  };
+}
+console.log(pipe(addOne, double)(5));
+
+
+// === QUESTION: find missing number in sequence ===
+function findMissing(arr) {
+  const n = arr.length + 1;
+  const expectedSum = (n * (n + 1)) / 2;
+  const actualSum = arr.reduce((a, b) => a + b, 0);
+  return expectedSum - actualSum;
+}
+console.log(findMissing([1,2,4,5]));
+
+
+// === QUESTION: convert array to frequency map ===
+function frequencyMap(arr) {
+  return arr.reduce((acc, item) => {
+    acc[item] = (acc[item] || 0) + 1;
+    return acc;
+  }, {});
+}
+console.log(frequencyMap(["a","b","a"]));
+
+
+// === QUESTION: sort array of objects by key ===
+function sortByKey(arr, key) {
+  return [...arr].sort((a, b) => a[key] > b[key] ? 1 : -1);
+}
+console.log(sortByKey([{a:2},{a:1}], "a"));
+
+
+// === QUESTION: merge two objects deeply ===
+function deepMerge(obj1, obj2) {
+  const result = {...obj1};
+  for (let key in obj2) {
+    if (typeof obj2[key] === "object" && obj2[key] !== null) {
+      result[key] = deepMerge(result[key] || {}, obj2[key]);
+    } else {
+      result[key] = obj2[key];
+    }
+  }
+  return result;
+}
+console.log(deepMerge({a:1,b:{c:2}}, {b:{d:3}}));
+
+
+// === QUESTION: generate random string ===
+function randomString(length) {
+  const chars = "abcdefghijklmnopqrstuvwxyz";
+  return Array.from({length}, () =>
+    chars[Math.floor(Math.random() * chars.length)]
+  ).join("");
+}
+console.log(randomString(5));
+
+
+// === QUESTION: check if object is empty ===
+function isEmpty(obj) {
+  return Object.keys(obj).length === 0;
+}
+console.log(isEmpty({}));
+
+
+// === QUESTION: convert object to query string ===
+function toQueryString(obj) {
+  return Object.entries(obj)
+    .map(([key, value]) => `${key}=${value}`)
+    .join("&");
+}
+console.log(toQueryString({a:1,b:2}));
+
+
+// === QUESTION: flatten object keys ===
+function flattenObject(obj, parent = "", res = {}) {
+  for (let key in obj) {
+    const newKey = parent ? `${parent}.${key}` : key;
+    if (typeof obj[key] === "object" && obj[key] !== null) {
+      flattenObject(obj[key], newKey, res);
+    } else {
+      res[newKey] = obj[key];
+    }
+  }
+  return res;
+}
+console.log(flattenObject({a:{b:1}}));
+
+
+// === QUESTION: retry promise function ===
+async function retry(fn, retries = 3) {
+  try {
+    return await fn();
+  } catch (err) {
+    if (retries === 0) throw err;
+    return retry(fn, retries - 1);
+  }
+}
+
+
+// === QUESTION: implement event emitter ===
+class EventEmitter {
+  constructor() {
+    this.events = {};
+  }
+  on(event, listener) {
+    (this.events[event] = this.events[event] || []).push(listener);
+  }
+  emit(event, data) {
+    (this.events[event] || []).forEach(listener => listener(data));
+  }
+}
+
+const emitter = new EventEmitter();
+emitter.on("test", msg => console.log(msg));
+emitter.emit("test", "Hello");
+
+
+// === QUESTION: calculate factorial recursively ===
+function factorial(n) {
+  if (n <= 1) return 1;
+  return n * factorial(n - 1);
+}
+console.log(factorial(5));
+
+
+// === QUESTION: find duplicates in array ===
+function findDuplicates(arr) {
+  const seen = new Set();
+  const duplicates = new Set();
+  for (let item of arr) {
+    if (seen.has(item)) duplicates.add(item);
+    else seen.add(item);
+  }
+  return [...duplicates];
+}
+console.log(findDuplicates([1,2,2,3,3,4]));
