@@ -590,3 +590,283 @@ function findDuplicates(arr) {
   return [...duplicates];
 }
 console.log(findDuplicates([1,2,2,3,3,4]));
+
+
+
+// === QUESTION: implement binary search ===
+function binarySearch(arr, target) {
+  let left = 0, right = arr.length - 1;
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2);
+    if (arr[mid] === target) return mid;
+    if (arr[mid] < target) left = mid + 1;
+    else right = mid - 1;
+  }
+  return -1;
+}
+console.log(binarySearch([1, 2, 3, 4, 5], 4));
+
+
+// === QUESTION: implement quick sort ===
+function quickSort(arr) {
+  if (arr.length <= 1) return arr;
+  const pivot = arr[arr.length - 1];
+  const left = arr.slice(0, -1).filter(x => x < pivot);
+  const right = arr.slice(0, -1).filter(x => x >= pivot);
+  return [...quickSort(left), pivot, ...quickSort(right)];
+}
+console.log(quickSort([5, 3, 8, 1]));
+
+
+// === QUESTION: implement merge sort ===
+function mergeSort(arr) {
+  if (arr.length <= 1) return arr;
+  const mid = Math.floor(arr.length / 2);
+  const left = mergeSort(arr.slice(0, mid));
+  const right = mergeSort(arr.slice(mid));
+  return merge(left, right);
+}
+function merge(left, right) {
+  const result = [];
+  while (left.length && right.length) {
+    result.push(left[0] < right[0] ? left.shift() : right.shift());
+  }
+  return [...result, ...left, ...right];
+}
+console.log(mergeSort([5, 2, 9, 1]));
+
+
+// === QUESTION: implement stack using array ===
+class Stack {
+  constructor() {
+    this.items = [];
+  }
+  push(item) { this.items.push(item); }
+  pop() { return this.items.pop(); }
+  peek() { return this.items[this.items.length - 1]; }
+}
+const stack = new Stack();
+stack.push(1);
+console.log(stack.pop());
+
+
+// === QUESTION: implement queue using array ===
+class Queue {
+  constructor() {
+    this.items = [];
+  }
+  enqueue(item) { this.items.push(item); }
+  dequeue() { return this.items.shift(); }
+}
+const queue = new Queue();
+queue.enqueue(1);
+console.log(queue.dequeue());
+
+
+// === QUESTION: find second largest number ===
+function secondLargest(arr) {
+  const unique = [...new Set(arr)].sort((a, b) => b - a);
+  return unique[1];
+}
+console.log(secondLargest([1, 4, 2, 4, 5]));
+
+
+// === QUESTION: check if array is sorted ===
+function isSorted(arr) {
+  return arr.every((val, i) => i === 0 || arr[i - 1] <= val);
+}
+console.log(isSorted([1, 2, 3]));
+
+
+// === QUESTION: implement flatten depth limited ===
+function flattenDepth(arr, depth = 1) {
+  return depth > 0
+    ? arr.reduce((acc, val) =>
+      acc.concat(Array.isArray(val) ? flattenDepth(val, depth - 1) : val),
+      [])
+    : arr.slice();
+}
+console.log(flattenDepth([1, [2, [3]]], 1));
+
+
+// === QUESTION: implement custom map function ===
+Array.prototype.myMap = function (callback) {
+  const result = [];
+  for (let i = 0; i < this.length; i++) {
+    result.push(callback(this[i], i, this));
+  }
+  return result;
+};
+console.log([1, 2, 3].myMap(x => x * 2));
+
+
+// === QUESTION: implement custom filter function ===
+Array.prototype.myFilter = function (callback) {
+  const result = [];
+  for (let i = 0; i < this.length; i++) {
+    if (callback(this[i], i, this)) result.push(this[i]);
+  }
+  return result;
+};
+console.log([1, 2, 3, 4].myFilter(x => x % 2 === 0));
+
+
+// === QUESTION: implement custom reduce function ===
+Array.prototype.myReduce = function (callback, initial) {
+  let acc = initial ?? this[0];
+  let start = initial !== undefined ? 0 : 1;
+  for (let i = start; i < this.length; i++) {
+    acc = callback(acc, this[i], i, this);
+  }
+  return acc;
+};
+console.log([1, 2, 3].myReduce((a, b) => a + b, 0));
+
+
+// === QUESTION: find majority element in array ===
+function majorityElement(arr) {
+  let count = 0, candidate;
+  for (let num of arr) {
+    if (count === 0) candidate = num;
+    count += (num === candidate) ? 1 : -1;
+  }
+  return candidate;
+}
+console.log(majorityElement([3, 3, 4]));
+
+
+// === QUESTION: rotate array k times ===
+function rotateArray(arr, k) {
+  k %= arr.length;
+  return [...arr.slice(-k), ...arr.slice(0, -k)];
+}
+console.log(rotateArray([1, 2, 3, 4, 5], 2));
+
+
+// === QUESTION: find maximum subarray sum ===
+function maxSubArray(arr) {
+  let max = arr[0], current = arr[0];
+  for (let i = 1; i < arr.length; i++) {
+    current = Math.max(arr[i], current + arr[i]);
+    max = Math.max(max, current);
+  }
+  return max;
+}
+console.log(maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]));
+
+
+// === QUESTION: check anagram strings ===
+function isAnagram(str1, str2) {
+  const format = str => str.split("").sort().join("");
+  return format(str1) === format(str2);
+}
+console.log(isAnagram("listen", "silent"));
+
+
+// === QUESTION: generate fibonacci sequence ===
+function fibonacci(n) {
+  const seq = [0, 1];
+  for (let i = 2; i < n; i++) {
+    seq.push(seq[i - 1] + seq[i - 2]);
+  }
+  return seq.slice(0, n);
+}
+console.log(fibonacci(6));
+
+
+// === QUESTION: remove element from array in place ===
+function removeElement(arr, val) {
+  return arr.filter(x => x !== val);
+}
+console.log(removeElement([1, 2, 3, 2], 2));
+
+
+// === QUESTION: find longest substring without repeating characters ===
+function longestSubstring(str) {
+  let set = new Set(), left = 0, max = 0;
+  for (let right = 0; right < str.length; right++) {
+    while (set.has(str[right])) {
+      set.delete(str[left++]);
+    }
+    set.add(str[right]);
+    max = Math.max(max, right - left + 1);
+  }
+  return max;
+}
+console.log(longestSubstring("abcabcbb"));
+
+
+// === QUESTION: implement lru cache ===
+class LRUCache {
+  constructor(limit) {
+    this.limit = limit;
+    this.cache = new Map();
+  }
+  get(key) {
+    if (!this.cache.has(key)) return -1;
+    const value = this.cache.get(key);
+    this.cache.delete(key);
+    this.cache.set(key, value);
+    return value;
+  }
+  put(key, value) {
+    if (this.cache.has(key)) this.cache.delete(key);
+    if (this.cache.size === this.limit) {
+      this.cache.delete(this.cache.keys().next().value);
+    }
+    this.cache.set(key, value);
+  }
+}
+const lru = new LRUCache(2);
+lru.put(1, 1);
+lru.put(2, 2);
+console.log(lru.get(1));
+
+
+// === QUESTION: implement promise race ===
+function promiseRace(promises) {
+  return new Promise((resolve, reject) => {
+    promises.forEach(p =>
+      Promise.resolve(p).then(resolve).catch(reject)
+    );
+  });
+}
+promiseRace([Promise.resolve("fast")]).then(console.log);
+
+
+// === QUESTION: debounce leading implementation ===
+function debounceLeading(fn, delay) {
+  let timer;
+  return function (...args) {
+    if (!timer) fn.apply(this, args);
+    clearTimeout(timer);
+    timer = setTimeout(() => timer = null, delay);
+  };
+}
+
+
+// === QUESTION: find kth largest element ===
+function kthLargest(arr, k) {
+  return arr.sort((a, b) => b - a)[k - 1];
+}
+console.log(kthLargest([3, 2, 1, 5, 6, 4], 2));
+
+
+// === QUESTION: deep freeze object ===
+function deepFreeze(obj) {
+  Object.freeze(obj);
+  Object.getOwnPropertyNames(obj).forEach(prop => {
+    if (obj[prop] !== null && typeof obj[prop] === "object") {
+      deepFreeze(obj[prop]);
+    }
+  });
+  return obj;
+}
+console.log(deepFreeze({ a: { b: 2 } }));
+
+
+// === QUESTION: implement simple router matcher ===
+function matchRoute(routes, path) {
+  return routes.find(route => route === path) || null;
+}
+console.log(matchRoute(["/home", "/about"], "/about"));
