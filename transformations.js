@@ -865,7 +865,7 @@ function deepFreeze(obj) {
 console.log(deepFreeze({ a: { b: 2 } }));
 
 
-// === QUESTION: implement simple router matcher ===
+// === QUESTION: implement simple router matchedr ===
 function matchRoute(routes, path) {
   return routes.find(route => route === path) || null;
 }
